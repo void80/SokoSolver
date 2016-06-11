@@ -24,8 +24,10 @@ public:
     void removeBall();
     void addBall();
     bool hasBall() const;
+    bool hasGoal() const { return m_hasGoal; }
     bool canAddBall() const;
     bool playerCanStand() const;
+    bool isUnfinishedBox() const;
 
 public:
     static const Object wall;

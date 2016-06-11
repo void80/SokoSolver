@@ -30,7 +30,7 @@ Object::Object(char sign)
     : m_hasWall(hasWall(sign))
     , m_hasPlayer(hasPlayer(sign))
     , m_isPlayerSet(false)
-    , m_hasGoal(hasGoal(sign))
+    , m_hasGoal(::hasGoal(sign))
     , m_hasBox(hasBox(sign))
 {
 }
@@ -74,41 +74,45 @@ bool Object::playerCanStand() const
     return !m_hasWall && !m_hasBox;
 }
 
+bool Object::isUnfinishedBox() const
+{
+    return hasBall() && !hasGoal();
+}
+
 char Object::sign() const
 {
 	if(m_hasWall)
 	{
 		return WALL;
 	}
-	else
+	else if(m_hasGoal)
 	{
-		if(m_hasGoal)
+		if(m_hasPlayer)
 		{
-			if(m_hasPlayer)
-			{
-				return PLAYER_GOAL;
-			}
-            else if(m_hasBox)
-            {
-                return BOX_GOAL;
-            }
-            else
-            {
-                return GOAL;
-            }
+			return PLAYER_GOAL;
 		}
-		else
-		{
-            if(m_hasPlayer)
-            {
-                return PLAYER;
-            }
-            else
-            {
-                return EMPTY;
-            }
-		}
+        else if(m_hasBox)
+        {
+            return BOX_GOAL;
+        }
+        else
+        {
+            return GOAL;
+        }
 	}
+	else if(m_hasPlayer)
+    {
+        return PLAYER;
+    }
+    else if(m_hasBox)
+    {
+        return BOX;
+    }
+    else
+    {
+        return EMPTY;
+    }
+	
 }
 
 const Object Object::wall   (WALL);

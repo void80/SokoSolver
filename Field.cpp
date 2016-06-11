@@ -146,22 +146,21 @@ const Object &Field::getObject(const Position &pos) const
     return field[makeIndex(pos)];
 }
 
-int Field::Check(void) const
+int Field::countUnfinishedBoxes() const
 {
-//    int countGoal = 0;
-    int countBall = 0;
+    int result = 0;
 	
-	for (int row = 1; row <= getHeight(); row++)
-		for (int col = 1; col <= getWidth(); col++)
+	for(int row = 1; row <= getHeight(); row++)
+    {
+		for(int col = 1; col <= getWidth(); col++)
 		{
-            //if(	getObject(Position(row, col)) == goal)
-				//countGoal++;
-			
-			if( getObject(Position(row, col)) == Object::ball)
-				countBall++;
+            if(getObject(Position(row, col)).isUnfinishedBox())
+            {
+                result++;
+            }
 		}
-	
-    return countBall;
+    }
+    return result;
 }
 
 //prüft, ob das entsprechende Feld Wandähnlich ist. noTestDir wird nicht getestet.
@@ -199,7 +198,7 @@ bool Field::isWallLike(const Position &pos, const Direction &noTestDir, int coun
 
 
 //prüft, ob das entsprechende FeldWallLike ist
-bool Field::isWallLike(const Position &pos, int count, PositionList &usedStones) const
+bool Field::isWallLike(const Position &pos, int count, PositionList usedStones) const
 {
     if (!isInField(pos))
     {
@@ -239,80 +238,66 @@ bool Field::isWallLike(const Position &pos, int count, PositionList &usedStones)
     return false;
 }
 
+/**
+* @brief check if a position is one corner of 4 Wall like objects
+* @param pos The position to check
+* @return true if the position is part of that pattern
+* A pattern of 4 Walls or Boxes is considered not possible anymore, if at least one of the boxes is not on a goal, because the boxes are no longer moveable
+* This function will be called on a stone that was recently moved and is not on a goal (therefor at least one of the stones is not on a goal)
+*/
 bool Field::isEdgeOfFourWalls(const Position& pos) const
 {
     //top Left of Block
-    if (pos.col <= getWidth() - 1 && pos.row <= getHeight() - 1)
-        if (getObject(pos + Direction::right).isWallOrBall() &&
-            getObject(pos + Direction::down).isWallOrBall() &&
-            getObject(pos + Direction::right + Direction::down).isWallOrBall())
+    if(pos.col <= getWidth() - 1 && pos.row <= getHeight() - 1)
+    {
+        if(     getObject(pos + Direction::right).isWallOrBall() 
+            &&  getObject(pos + Direction::down).isWallOrBall()
+            &&  getObject(pos + Direction::right + Direction::down).isWallOrBall()
+            )
+        {
             return true;
+        }
+    }
+    
     //top Right of Block
-    if (pos.col >= 2 && pos.row <= getHeight() - 1)
-        if (getObject(pos + Direction::left).isWallOrBall() &&
-            getObject(pos + Direction::down).isWallOrBall() &&
-            getObject(pos + Direction::left + Direction::down).isWallOrBall())
+    if(pos.col >= 2 && pos.row <= getHeight() - 1)
+    {
+        if(     getObject(pos + Direction::left).isWallOrBall()
+            &&  getObject(pos + Direction::down).isWallOrBall()
+            &&  getObject(pos + Direction::left + Direction::down).isWallOrBall()
+            )
+        {
             return true;
+        }
+    }
+    
     //Bottom Left of Block
-    if (pos.col <= getWidth() - 1 && pos.row >= 2)
-        if (getObject(pos + Direction::right).isWallOrBall() &&
-            getObject(pos + Direction::up).isWallOrBall() &&
-            getObject(pos + Direction::right + Direction::up).isWallOrBall())
+    if(pos.col <= getWidth() - 1 && pos.row >= 2)
+    {
+        if(     getObject(pos + Direction::right).isWallOrBall()
+            &&  getObject(pos + Direction::up).isWallOrBall()
+            &&  getObject(pos + Direction::right + Direction::up).isWallOrBall()
+            )
+        {
             return true;
+        }
+    }
+
     //BottomRight of Block
-    if (pos.col >= 2 && pos.row >= 2)
-        if (getObject(pos + Direction::left).isWallOrBall() &&
-            getObject(pos + Direction::up).isWallOrBall() &&
-            getObject(pos + Direction::left + Direction::up).isWallOrBall())
+    if(pos.col >= 2 && pos.row >= 2)
+    {
+        if(     getObject(pos + Direction::left).isWallOrBall()
+            &&  getObject(pos + Direction::up).isWallOrBall()
+            &&  getObject(pos + Direction::left + Direction::up).isWallOrBall()
+            )
+        {
             return true;
+        }
+    }
 
     return false;
 }
 
-#if 0
-bool Field::isWallFull(const Position &stonePos) const
-{
-    /*
-    ##
-    #
-    #$ <-- Pos
-    #
-    ##
-    */
-    /* finde eine U förmige Wand.
-    left up und down stehen für die Richtungen, 
-    allerdings für alle, d.h.left muss nicht zwangsweise nach links zeigen
-    */
-    DirectionList dirList = Direction::getAllDirections();
-    for (DirectionList::const_iterator pLeft = dirList.begin(); pLeft != dirList.end(); pLeft++)
-    {
-        Direction left = **pLeft;
-        Direction up   = left.ortho();
-        Direction down = up.back();
-
-        if (getObject(pos + left) == wall)
-        {
-            // Links ist eien Wand, Rand des Us finden
-            
-            // oberer Rand
-
-        
-        }
-    }
-}
-bool Field::isPossible(const Position &pos, const Direction &dir) const
-{
-	// folgendes gilt asl unmöglich :
-	//   -------	wobei % für einen WallLike
-	//   -  %  -	Platz steht. also eine wand,
-	//   - %$  -	oder ein stein, der nicht 
-	//   -     -	verschoben werden kann
-	//   -------
-	return 
-        getObject(pos) == Object::both ||
-        !isWallLike(pos, dir.back(), 4);
-}
-#endif
 bool Field::isPossible(const Position &stonePos) const
 {
     if (isImpossibleStone(stonePos))

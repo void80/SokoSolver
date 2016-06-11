@@ -20,7 +20,7 @@ int main(void)
     {
         Direction::initDirections();
         Solution solution(20);
-        Field field(
+        /* Field field(
             "######\n"
             "# .@ #\n"
             "#   $#\n"
@@ -29,7 +29,7 @@ int main(void)
             "# .$ #\n"
             "######"); //*/
 
-        /* Field field("#######  \n"
+        Field field("#######  \n"
 				    "#  .$ ###\n"
 			        "# .$.$  #\n"
 				    "#*$.$. @#\n"
@@ -41,7 +41,7 @@ int main(void)
 
         try
         {
-            StepList result = solution.find(40, field, FieldList());
+            StepList result = solution.find(20, field, FieldList());
 
             result.print();
         }

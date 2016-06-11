@@ -12,10 +12,7 @@
 #include "Step.h"
 
 #include <ctime>
-
 #include <algorithm>
-
-#include <conio.h>
 
 #include "Object.h"
 
@@ -84,7 +81,7 @@ void Solution::show(void) const
 StepList Solution::find(int remainingSteps, Field field, FieldList &fieldHistory)
 {
     std::cout << "Depth: " << remainingSteps << std::endl;
-    if (field.Check() == 0)
+    if (field.countUnfinishedBoxes() == 0)
     {
         return StepList();
     }
@@ -141,7 +138,7 @@ StepList Solution::tryStones(int remainingSteps, const Field &field,const Positi
             {
 
                 Field nextField = field.createNextField(*stone, **dir);
-
+                nextField.print();
                 #if defined(TEST_FIELD_AFTER_CREATION) && TEST_FIELD_AFTER_CREATION
                 if (fieldHistory.containsSimilarField(nextField))
                 {
@@ -183,7 +180,7 @@ StepList Solution::tryStones(int remainingSteps, const Field &field,const Positi
                     nextField.print();
                     #endif
 
-                    if (nextField.Check() == 0)
+                    if (nextField.countUnfinishedBoxes() == 0)
                     {
                         return way;
                     }

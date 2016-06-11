@@ -11,15 +11,6 @@ class Object;
 class Field
 {
 public:
-/*    typedef enum{ball    = '$', 
-                 goal    = '.',
-                 both    = '*',
-                 wall    = '#',
-                 empty   = ' ',
-                 megoal  = ':',
-                 meempty = '@'} Object;*/
-
-public:
     Field(int width, int height);
     Field(const Field &field);
     Field(std::string definition);
@@ -43,18 +34,13 @@ public:
     void removePlayer();
     void addPlayer(Position const &pos);
 
-    int Check() const;
+    int countUnfinishedBoxes() const;
 
     bool isWallLike(Position const &pos, Direction const &noTestDir, int count) const;
-    bool isWallLike(Position const &pos, int count, PositionList &usedStones) const;
+    bool isWallLike(Position const &pos, int count, PositionList usedStones) const;
     bool isPossible(Position const &stonePos) const;
     bool isImpossibleStone(Position const &stonePos) const;
     bool isEdgeOfFourWalls(Position const &pos) const;
-
-    // bool isPartOfPattern(const Position &pos, Pattern &pattern) const;
-    // bool isPartOfUnchangedPattern(const Position &pos, const Pattern &pattern) const;
-
-    bool isWallFull(Position const &stonePos) const;
 
     PositionList getBallList(bool includeGoal, bool includeBall) const;
 
