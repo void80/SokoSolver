@@ -1,91 +1,155 @@
+
+// PROJECT
 #include "Object.h"
 
-Object::Object(void)
+// STD
+#include <utility>
+#include <exception>
+#include <string>
+
+
+namespace
 {
-    this->sign = ' ';
-}
+    bool hasWall(char sign);
+    bool hasPlayer(char sign);
+    bool hasGoal(char sign);
+    bool hasBox(char sign);
+} // OF anonymous NS
+
+
+static char const WALL          = '#';
+static char const BOX			= '$';
+static char const BOX_GOAL		= '*';
+static char const EMPTY			= ' ';
+static char const PLAYER		= '@';
+static char const PLAYER_GOAL	= ':';
+static char const GOAL			= '.';
+static char const WILDCARD		= '?';
+static char const ANY_BALL		= 'O';
+
 
 Object::Object(char sign)
+    : m_hasWall(hasWall(sign))
+    , m_hasPlayer(hasPlayer(sign))
+    , m_isPlayerSet(false)
+    , m_hasGoal(hasGoal(sign))
+    , m_hasBox(hasBox(sign))
 {
-    this->sign = sign;
+}
 
-    switch (sign)
+
+bool Object::operator==(Object const &other) const
+{
+    return m_hasWall == other.m_hasWall
+        && m_hasPlayer == other.m_hasPlayer
+        && m_isPlayerSet == other.m_isPlayerSet
+        && m_hasGoal == other.m_hasGoal
+        && m_hasBox == other.m_hasBox
+    ;
+}
+
+bool Object::isWallOrBall() const
+{
+    return m_hasWall || m_hasBox;
+}
+
+void Object::removeBall()
+{
+    m_hasBox = false;
+}
+
+void Object::addBall()
+{
+    m_hasBox = true;
+}
+bool Object::hasBall() const
+{
+    return m_hasBox;
+}
+bool Object::canAddBall() const
+{
+    return !m_hasWall && !m_hasPlayer && !m_hasBox;
+}
+
+bool Object::playerCanStand() const
+{
+    return !m_hasWall && !m_hasBox;
+}
+
+char Object::sign() const
+{
+	if(m_hasWall)
+	{
+		return WALL;
+	}
+	else
+	{
+		if(m_hasGoal)
+		{
+			if(m_hasPlayer)
+			{
+				return PLAYER_GOAL;
+			}
+            else if(m_hasBox)
+            {
+                return BOX_GOAL;
+            }
+            else
+            {
+                return GOAL;
+            }
+		}
+		else
+		{
+            if(m_hasPlayer)
+            {
+                return PLAYER;
+            }
+            else
+            {
+                return EMPTY;
+            }
+		}
+	}
+}
+
+const Object Object::wall   (WALL);
+const Object Object::ball   (BOX);
+const Object Object::both   (BOX_GOAL);
+const Object Object::empty  (EMPTY);
+const Object Object::meempty(PLAYER);
+const Object Object::megoal (PLAYER_GOAL);
+const Object Object::goal   (GOAL);
+
+const Object Object::wildcard (WILDCARD);
+const Object Object::anyBall  (ANY_BALL);
+
+
+
+namespace 
+{
+
+    bool hasWall(char sign)
     {
-    case '#':
-    case ' ':
-    case '.':
-    case '@':
-    case ':':
-    case '*':
-    case '$':
-        break;
-
-    case '?':
-    case 'O':
-        break;
-    default:
-        throw sign;
-
+        return sign == WALL;
     }
 
-}
-Object::Object(const Object &other)
-{
-    this->sign = other.sign;
-}
+    bool hasPlayer(char sign)
+    {
+        return sign == PLAYER || sign == PLAYER_GOAL;
+    }
+    
+    bool hasGoal(char sign)
+    {
+        return sign == GOAL || sign == PLAYER_GOAL || sign == BOX_GOAL;
+    }
+    
+    bool hasBox(char sign)
+    {
+        return sign == BOX || sign == BOX_GOAL;
+    }
 
-Object::~Object(void)
-{
-
-}
-
-bool Object::operator== (const Object &other) const
-{
-    return sign == other.sign;
-}
-
-bool Object::isWallOrBall(void) const
-{
-    return *this == wall || *this == ball || *this == both;
-}
-
-Object::operator char() const
-{
-    return sign;
-}
-
-void Object::removeBall(void)
-{
-    *this = (*this == both ? goal : empty);
-}
-
-void Object::addBall(void)
-{
-    *this = (*this == goal || *this == megoal ? both : ball);
-}
-bool Object::hasBall(void) const
-{
-    return *this == ball || *this == both;
-}
-
-bool Object::canAddBall(void) const
-{
-    return *this == empty || *this == goal;
-}
-
-bool Object::playerCanStand(void) const
-{
-    return *this == empty || *this == meempty || *this == goal || *this == megoal;
-}
+} // OF anonymous NS
 
 
-const Object Object::wall   ('#');
-const Object Object::ball   ('$');
-const Object Object::both   ('*');
-const Object Object::empty  (' ');
-const Object Object::meempty('@');
-const Object Object::megoal (':');
-const Object Object::goal   ('.');
 
-const Object Object::wildcard ('?');
-const Object Object::anyBall  ('O');

@@ -23,68 +23,60 @@ public:
     Field(int width, int height);
     Field(const Field &field);
     Field(std::string definition);
-    ~Field(void);
+    ~Field();
 
-    void print(void) const;
+    void print() const;
 
     
-    int getX(void) const;
-    int getY(void) const;
-    Position getPosition(void) const;
+    int getX() const;
+    int getY() const;
+    Position getPosition() const;
 
-    int getWidth(void) const;
-    int getHeight(void) const;
+    int getWidth() const;
+    int getHeight() const;
 
-    const Object &getObject(const Position &pos) const;
-    Object &getObject(const Position &pos);
-    void insertObject(const Position &pos, Object object);
+    const Object &getObject(Position const &pos) const;
+    Object &getObject(Position const &pos);
+    void insertObject(Position const &pos, Object object);
     
     void removePlayer(const Position &pos);
-    void removePlayer(void);
-    void addPlayer(const Position &pos);
+    void removePlayer();
+    void addPlayer(Position const &pos);
 
-    int Check(void) const;
+    int Check() const;
 
-    bool isWallLike(const Position &pos, const Direction &noTestDir, int count) const;
-    bool isWallLike(const Position &pos, int count, PositionList &usedStones) const;
-    bool isPossible(const Position &stonePos) const;
-    bool isImpossibleStone(const Position &stonePos) const;
-    bool isEdgeOfFourWalls(const Position& pos) const;
+    bool isWallLike(Position const &pos, Direction const &noTestDir, int count) const;
+    bool isWallLike(Position const &pos, int count, PositionList &usedStones) const;
+    bool isPossible(Position const &stonePos) const;
+    bool isImpossibleStone(Position const &stonePos) const;
+    bool isEdgeOfFourWalls(Position const &pos) const;
 
-    bool isPartOfPattern(const Position &pos, Pattern &pattern) const;
-    bool isPartOfUnchangedPattern(const Position &pos, const Pattern &pattern) const;
+    // bool isPartOfPattern(const Position &pos, Pattern &pattern) const;
+    // bool isPartOfUnchangedPattern(const Position &pos, const Pattern &pattern) const;
 
-    bool isWallFull(const Position &stonePos) const;
+    bool isWallFull(Position const &stonePos) const;
 
     PositionList getBallList(bool includeGoal, bool includeBall) const;
 
-    bool isInField(const Position &position) const;
+    bool isInField(Position const &position) const;
 
-    StepList getWayTo(const Position &pos) const;
-    StepList getShortestWayTo(const Position &pos) const;
+    StepList getWayTo(Position const &pos) const;
+    StepList getShortestWayTo(Position const &pos) const;
 
-    bool isSameConfiguration(const Field &other) const;
-    bool hasSameBalls(const Field &other) const;
-    bool canReachPosition(const Position &pos) const;
+    bool isSameConfiguration(Field const &other) const;
+    bool hasSameBalls(Field const &other) const;
+    bool canReachPosition(Position const &pos) const;
 
-    Field createNextField(const Position &stonePos, const Direction &stoneDirection) const;
+    Field createNextField(Position const &stonePos, Direction const &stoneDirection) const;
 private:
     int width, height;
     Object *field;
 
-    void initializeField(void);
+    void initializeField();
     int makeIndex(int row, int col) const;
     int makeIndex(const Position &pos) const;
 
     int posX, posY;
 
-    //static char convertToText(const Object o);
 
-public:
-    /*static int moveX(int direction);
-    static int moveX(int direction, int oldX);
-    static int moveY(int direction);
-    static int moveY(int direction, int oldY);*/
 };
-
-//typedef std::vector<Field> FieldList;

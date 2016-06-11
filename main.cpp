@@ -20,7 +20,7 @@ int main(void)
     {
         Direction::initDirections();
         Solution solution(20);
-        /* Field field(
+        Field field(
             "######\n"
             "# .@ #\n"
             "#   $#\n"
@@ -29,7 +29,7 @@ int main(void)
             "# .$ #\n"
             "######"); //*/
 
-        Field field("#######  \n"
+        /* Field field("#######  \n"
 				    "#  .$ ###\n"
 			        "# .$.$  #\n"
 				    "#*$.$. @#\n"
@@ -56,14 +56,7 @@ int main(void)
         std::cout << "Trying to instantiate unknown char: '" << c << "'" << std::endl;
     }
 
-getch();
-getch();
-getch();
-getch();
-getch();
-getch();
-
-return 0;
+	return 0;
 }
 
 

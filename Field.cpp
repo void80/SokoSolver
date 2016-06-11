@@ -123,7 +123,7 @@ void Field::print(void) const
     {
         for(int col = 1; col <= width; col++)
         {
-            std::cout << static_cast<char>(getObject(Position(row, col)));
+            std::cout << getObject(Position(row, col));
         }
         std::cout << std::endl;
     }

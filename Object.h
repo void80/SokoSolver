@@ -1,27 +1,31 @@
 #pragma once
 
+// STD
+#include <iosfwd>
+
 class Object
 {
 public:
-    Object(void);
-    Object(char sign);
-    Object(const Object &other);
-    ~Object(void);
+    Object(char sign = ' ');
 
 private:
-    char sign;
+    // char m_sign;
+	bool m_hasWall;
+	bool m_hasPlayer;
+	bool m_isPlayerSet;
+	bool m_hasGoal;
+	bool m_hasBox;
 
 public:
-    bool operator== (const Object &other) const;
-    operator char() const;
+    bool operator==(Object const &other) const;
+	char sign() const;
 
-    bool isWallOrBall(void) const;
-    void removeBall(void);
-    void addBall(void);
-//    void addPlayer(void);
-    bool hasBall(void) const;
-    bool canAddBall(void) const;
-    bool playerCanStand(void) const;
+    bool isWallOrBall() const;
+    void removeBall();
+    void addBall();
+    bool hasBall() const;
+    bool canAddBall() const;
+    bool playerCanStand() const;
 
 public:
     static const Object wildcard;
@@ -35,3 +39,8 @@ public:
     static const Object megoal;
     static const Object goal;
 };
+
+inline std::ostream & operator<<(std::ostream &stream, Object const &o)
+{
+	return stream << o.sign();
+}
