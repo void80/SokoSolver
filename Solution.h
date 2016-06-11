@@ -9,7 +9,7 @@ class PositionList;
 class Solution
 {
 private:
-    typedef enum {undefined, impossible, nextStep, tooMuchSteps, similar} State;
+    typedef enum {undefined, impossible, nextStep, tooMuchSteps, similar, cannotReach} State;
 
 public:
     Solution(int maxSteps);

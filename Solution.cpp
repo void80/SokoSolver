@@ -80,7 +80,7 @@ void Solution::show(void) const
 
 StepList Solution::find(int remainingSteps, Field field, FieldList &fieldHistory)
 {
-    std::cout << "Depth: " << remainingSteps << std::endl;
+    // std::cout << "Depth: " << remainingSteps << std::endl;
     if (field.countUnfinishedBoxes() == 0)
     {
         return StepList();
@@ -138,7 +138,7 @@ StepList Solution::tryStones(int remainingSteps, const Field &field,const Positi
             {
 
                 Field nextField = field.createNextField(*stone, **dir);
-                nextField.print();
+				// nextField.print();
                 #if defined(TEST_FIELD_AFTER_CREATION) && TEST_FIELD_AFTER_CREATION
                 if (fieldHistory.containsSimilarField(nextField))
                 {
@@ -192,6 +192,8 @@ StepList Solution::tryStones(int remainingSteps, const Field &field,const Positi
                 }
                 catch(bool)
                 {
+					// TODO: only try moves that can be reached
+					showState(Solution::cannotReach);
                     continue;
                 }
             }
@@ -200,87 +202,6 @@ StepList Solution::tryStones(int remainingSteps, const Field &field,const Positi
     throw false;
 }
 
-
-/*int Solution::find(int iStep, const Direction &dir, Field field)
-{
-
-	// der algorithmuss
-	//	: move bewegt in die richtung udn zwar den soundsovielten schritt
-	//	: solve löst das rätsel ab dem step mit der richtung
-	//  : undo nimmt den schritt zurück
-	increaseSteps();
-
-    printStats(iStep);
-
-	if(iStep >= 40)
-		return 0;
-    
-    if (!move(iStep, dir, field)) // bewgung nicht erfolgreich?
-		return 0; // kein erfolg
-	
-	// stehe an neuer position
-
-int cErg;
-    cErg = field.Check();
-	if (!cErg)
-		return 1;	// erfolg
-	
-	if (cErg > (40 - iStep))
-		return 2;	// gar nicht mehr genug schritte übrig
-
-	
-
-	if (!optimize(iStep, field))
-		return 2;	// zu zurücknehmen, unnötiger zug
-
-	if (stone[iStep] && 
-        !field.isPossible(dir.move(field.getPosition()), dir ))
-		return 2;	// stein verschoben udn lösung unmöglioch?
-
-
-    DirectionList dirList = Direction::getAllDirections();
-    for (DirectionList::const_iterator i = dirList.begin();
-         i != dirList.end();
-         i++)
-    {
-        if(**i == dir.back() &&
-			stone[iStep] == 0)
-				continue;
-		int erg;
-		if ((erg = find(iStep+1, **i, field)) == 1)
-			return 1;	// 1 zurück
-
-		if (erg == 2)	// kein erfolg aber zug gemacht
-			undoStep(iStep+1);	// zug zurücknehmen
-	}
-	
-return 2;	// ncihst gefunden, aber zug gemacht
-}
-*/
-
-/*int Solution::optimize(int iStep, Field &field)
-{
-int i;
-	
-	// iStep ist momentaner zug mit momentaner pos udn momentanem stone
-    cPosX[iStep] = field.getX();
-	cPosY[iStep] = field.getY();	// position im array vermerken
-
-	
-	if (stone[iStep])	// wurde stein verschoben
-		return 1;	// zug innerhalb optimierungsspezifikationenen
-
-	for (i = iStep - 1; i >= 2 ; i--)	// von iStep -1 bis 2 inklusive
-	{
-		if (field.getX() == cPosX[i] && field.getY() == cPosY[i])
-			return 0;	// schonmal gewesen
-		
-		if (stone[i])
-			return 1;
-	}
-	
-return 1;
-}*/
 
 
 int Solution::move(int iStep, const Direction &dir, Field &field)
@@ -395,6 +316,7 @@ void Solution::showState(State state) const
         switch(state)
         {
         case impossible:
+		case cannotReach:
             cout << '!';
             break;
         case nextStep:
@@ -409,10 +331,13 @@ void Solution::showState(State state) const
         cout << endl;
         switch(state)
         {
-        case impossible:
-            cout << "NotPossible!";
-            break;
-        case nextStep:
+		case impossible:
+			cout << "NotPossible!";
+			break;
+		case cannotReach:
+			cout << "cannotReach!";
+			break;
+		case nextStep:
             cout << "NextStep.";
             break;
         case tooMuchSteps:        

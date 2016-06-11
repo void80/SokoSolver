@@ -10,8 +10,8 @@
 #endif
 
 
-#define PRINT_NOT_POSSIBLE   1
-#define PRINT_STEP           1
+#define PRINT_NOT_POSSIBLE   0
+#define PRINT_STEP           0
 #define PRINT_SAME_CONFIG    0
 #define PRINT_TOO_MUCH_STEPS 0
 
