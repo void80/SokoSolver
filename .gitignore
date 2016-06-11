@@ -1,0 +1,8 @@
+.vs/
+Backup/
+Debug/
+Release2/
+SokoSolver.VC.VC.opendb
+SokoSolver.VC.db
+*.user
+
