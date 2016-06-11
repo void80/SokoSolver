@@ -131,7 +131,6 @@
     <ClCompile Include="FieldList.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="Pattern.cpp" />
     <ClCompile Include="Position.cpp" />
     <ClCompile Include="PositionList.cpp" />
     <ClCompile Include="Solution.cpp" />
@@ -146,7 +145,6 @@
     <ClInclude Include="FieldList.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="Pattern.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="PositionList.h" />
     <ClInclude Include="Solution.h" />

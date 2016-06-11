@@ -33,9 +33,6 @@
     <ClCompile Include="Object.cpp">
       <Filter>Quellcodedateien</Filter>
     </ClCompile>
-    <ClCompile Include="Pattern.cpp">
-      <Filter>Quellcodedateien</Filter>
-    </ClCompile>
     <ClCompile Include="Position.cpp">
       <Filter>Quellcodedateien</Filter>
     </ClCompile>
@@ -72,9 +69,6 @@
       <Filter>Header-Dateien</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>Header-Dateien</Filter>
-    </ClInclude>
-    <ClInclude Include="Pattern.h">
       <Filter>Header-Dateien</Filter>
     </ClInclude>
     <ClInclude Include="Position.h">

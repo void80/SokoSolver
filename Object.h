@@ -28,9 +28,6 @@ public:
     bool playerCanStand() const;
 
 public:
-    static const Object wildcard;
-    static const Object anyBall;
-
     static const Object wall;
     static const Object ball;
     static const Object both;

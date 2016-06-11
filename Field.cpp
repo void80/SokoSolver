@@ -7,7 +7,6 @@
 #include "Direction.h"
 #include "Position.h"
 
-#include "Pattern.h"
 #include "Object.h"
 
 Field::Field(int width, int height)
@@ -329,10 +328,7 @@ bool Field::isPossible(const Position &stonePos) const
         }
     }
     
-            
-    return !Pattern::getEdgePattern().existsInField ((*this), stonePos) && 
-		!Pattern::getEdgePatternOneLineTwoEmpty().existsInField ((*this), stonePos) &&
-		!Pattern::getBigEdgePattern().existsInField ((*this), stonePos);
+    return true;            
 }
 
 bool Field::isImpossibleStone(const Position &stonePos) const
@@ -344,18 +340,17 @@ bool Field::isImpossibleStone(const Position &stonePos) const
 
 
 
-
 void Field::removePlayer(const Position &pos)
 {
     insertObject(pos,
                  getObject(pos) == Object::megoal ? Object::goal : Object::empty);
 }
 
-void Field::removePlayer(void)
+void Field::removePlayer()
 {
     removePlayer(getPosition());
 }
-Position Field::getPosition(void) const
+Position Field::getPosition() const
 {
     return Position(getY(), getX());
 }

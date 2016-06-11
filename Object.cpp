@@ -24,8 +24,6 @@ static char const EMPTY			= ' ';
 static char const PLAYER		= '@';
 static char const PLAYER_GOAL	= ':';
 static char const GOAL			= '.';
-static char const WILDCARD		= '?';
-static char const ANY_BALL		= 'O';
 
 
 Object::Object(char sign)
@@ -120,10 +118,6 @@ const Object Object::empty  (EMPTY);
 const Object Object::meempty(PLAYER);
 const Object Object::megoal (PLAYER_GOAL);
 const Object Object::goal   (GOAL);
-
-const Object Object::wildcard (WILDCARD);
-const Object Object::anyBall  (ANY_BALL);
-
 
 
 namespace 
